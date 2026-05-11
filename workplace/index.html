@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乘务调酒培训课程</title>
+    <style>
+        :root {
+          --button-outline: rgba(0,0,0, .10);
+          --badge-outline: rgba(0,0,0, .05);
+          --opaque-button-border-intensity: -8;
+          --elevate-1: rgba(0,0,0, .03);
+          --elevate-2: rgba(0,0,0, .08);
+          --background: hsl(25 15% 12%);
+          --foreground: hsl(35 20% 90%);
+          --card: hsl(25 10% 18%);
+          --card-foreground: hsl(35 20% 90%);
+          --popover: hsl(25 10% 18%);
+          --popover-foreground: hsl(35 20% 90%);
+          --primary: hsl(38 65% 55%);
+          --primary-foreground: hsl(25 25% 12%);
+          --secondary: hsl(25 15% 25%);
+          --secondary-foreground: hsl(35 20% 90%);
+          --muted: hsl(25 12% 20%);
+          --muted-foreground: hsl(30 10% 60%);
+          --accent: hsl(25 15% 25%);
+          --accent-foreground: hsl(35 20% 90%);
+          --info: hsl(38 65% 55%);
+          --info-foreground: hsl(25 25% 12%);
+          --destructive: hsl(0 65% 55%);
+          --destructive-foreground: hsl(0 0% 100%);
+          --success: hsl(142 60% 45%);
+          --success-foreground: hsl(115 77% 97%);
+          --warning: hsl(38 65% 55%);
+          --warning-foreground: hsl(25 25% 12%);
+          --border: hsl(30 15% 28%);
+          --input: hsl(30 15% 28%);
+          --ring: hsl(38 65% 55%);
+          --font-sans:
+            'LarkHackSafariFont', 'LarkEmojiFont', 'LarkChineseQuote', '-apple-system',
+            'BlinkMacSystemFont', 'Helvetica Neue', 'Tahoma', 'PingFang SC',
+            'Microsoft Yahei', 'Arial', 'Hiragino Sans GB', 'sans-serif',
+            'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+          --radius: 0.75rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-sans);
+            background-color: var(--background);
+            color: var(--foreground);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .game-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .header {
+            text-align: center;
+            padding: 1rem 0 2rem;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .score-display {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-value {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .score-label {
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+        }
+
+        .card {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .cocktail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+        }
+
+        .cocktail-card {
+            background-color: var(--card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .cocktail-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .cocktail-card.completed {
+            border-color: var(--success);
+            opacity: 0.8;
+        }
+
+        .cocktail-image-placeholder {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--muted) 100%);
+            border-radius: var(--radius);
+            margin-bottom: 0.75rem;
+            object-fit: contain;
+        }
+
+        .cocktail-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .cocktail-name-en {
+            font-size: 0.75rem;
+            color: var(--muted-foreground);
+        }
+
+        .completed-badge {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background-color: var(--success);
+            color: var(--success-foreground);
+            border-radius: 9999px;
+            font-size: 0.75rem;
+        }
+
+        .glass-select-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .glass-option {
+            background-color: var(--card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem 1rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .glass-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .glass-option-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .glass-option-name {
+            font-weight: 600;
+        }
+
+        .game-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .game-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .recipe-panel h2 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .recipe-name-en {
+            color: var(--muted-foreground);
+            margin-bottom: 1rem;
+        }
+
+        .recipe-illustration {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--muted) 100%);
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .work-area-title {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .glass-area {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .drop-zone {
+            display: inline-block;
+            position: relative;
+            padding: 1.25rem 1.5rem 2.25rem;
+            border: 3px dashed transparent;
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone.drag-over {
+            border-color: var(--primary);
+            background-color: rgba(242, 175, 79, 0.1);
+        }
+
+        .glass-placeholder {
+            --glass-clip: polygon(14% 0, 86% 0, 80% 100%, 20% 100%);
+            --liquid-left: 15%;
+            --liquid-right: 15%;
+            --liquid-bottom: 8%;
+            --liquid-height: 82%;
+            width: 128px;
+            height: 230px;
+            margin: 0 auto 0.75rem;
+            position: relative;
+            overflow: visible;
+            filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.24));
+        }
+
+        .glass-placeholder::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            clip-path: var(--glass-clip);
+            background:
+                linear-gradient(90deg, rgba(255,255,255,0.38) 0 4px, transparent 4px calc(100% - 4px), rgba(255,255,255,0.28) calc(100% - 4px)),
+                linear-gradient(180deg, rgba(255,255,255,0.22), rgba(180,210,235,0.08));
+            border: 4px solid rgba(220, 236, 255, 0.34);
+            box-shadow:
+                inset 8px 0 14px rgba(255,255,255,0.12),
+                inset -8px 0 14px rgba(0,0,0,0.14);
+            pointer-events: none;
+            z-index: 4;
+        }
+
+        .glass-placeholder.tumbler {
+            --glass-clip: polygon(5% 0, 95% 0, 86% 100%, 14% 100%);
+            --liquid-left: 7%;
+            --liquid-right: 7%;
+            --liquid-bottom: 9%;
+            --liquid-height: 76%;
+            width: 168px;
+            height: 150px;
+        }
+
+        .glass-placeholder.champagne {
+            --glass-clip: polygon(24% 0, 76% 0, 69% 66%, 58% 82%, 54% 94%, 46% 94%, 42% 82%, 31% 66%);
+            --liquid-left: 25%;
+            --liquid-right: 25%;
+            --liquid-bottom: 23%;
+            --liquid-height: 67%;
+            width: 132px;
+            height: 218px;
+            margin-bottom: 4.5rem;
+        }
+
+        .glass-placeholder.champagne::before {
+            background:
+                linear-gradient(90deg, rgba(255,255,255,0.36) 0 3px, transparent 3px calc(100% - 3px), rgba(255,255,255,0.24) calc(100% - 3px)),
+                linear-gradient(180deg, rgba(255,255,255,0.24), rgba(180,210,235,0.07));
+        }
+
+        .champagne-stem {
+            display: none;
+        }
+
+        .glass-placeholder.champagne .champagne-stem {
+            display: block;
+            position: absolute;
+            left: 50%;
+            bottom: -66px;
+            width: 104px;
+            height: 82px;
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+
+        .glass-placeholder.champagne .champagne-stem::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: -10px;
+            width: 8px;
+            height: 74px;
+            transform: translateX(-50%);
+            border-radius: 999px;
+            background:
+                linear-gradient(90deg, rgba(255,255,255,0.48), rgba(185,210,232,0.18) 48%, rgba(255,255,255,0.34));
+            box-shadow:
+                inset 1px 0 2px rgba(255,255,255,0.28),
+                0 4px 10px rgba(0,0,0,0.18);
+        }
+
+        .glass-placeholder.champagne .champagne-stem::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 104px;
+            height: 18px;
+            transform: translateX(-50%);
+            border: 3px solid rgba(220, 236, 255, 0.32);
+            border-radius: 50%;
+            background:
+                radial-gradient(ellipse at center, rgba(255,255,255,0.24), rgba(180,210,235,0.09) 58%, rgba(255,255,255,0.04));
+            box-shadow:
+                inset 0 2px 3px rgba(255,255,255,0.2),
+                0 7px 12px rgba(0,0,0,0.18);
+        }
+
+        .glass-placeholder.champagne + .glass-label {
+            margin-top: 0.75rem;
+        }
+
+        .glass-contents {
+            position: absolute;
+            bottom: var(--liquid-bottom);
+            left: var(--liquid-left);
+            right: var(--liquid-right);
+            background: linear-gradient(180deg, var(--primary) 0%, hsl(38 50% 40%) 100%);
+            transition: height 0.5s ease, background 0.5s ease;
+            clip-path: var(--glass-clip);
+            opacity: 0.18;
+            z-index: 1;
+        }
+
+        .glass-liquid-layers {
+            position: absolute;
+            bottom: var(--liquid-bottom);
+            left: var(--liquid-left);
+            right: var(--liquid-right);
+            height: var(--liquid-height);
+            display: flex;
+            flex-direction: column-reverse;
+            pointer-events: none;
+            clip-path: var(--glass-clip);
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .liquid-layer {
+            width: 100%;
+            transition: all 0.6s ease;
+            opacity: 0;
+            transform: scaleY(0);
+            transform-origin: bottom;
+        }
+
+        .liquid-layer.show {
+            opacity: 1;
+            transform: scaleY(1);
+        }
+
+        .solid-ingredient {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: dropIn 0.5s ease forwards;
+            pointer-events: none;
+            z-index: 6;
+        }
+
+        #solidIngredients {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 6;
+        }
+
+        .ice-clip {
+            position: absolute;
+            bottom: var(--liquid-bottom);
+            left: var(--liquid-left);
+            right: var(--liquid-right);
+            height: var(--liquid-height);
+            clip-path: var(--glass-clip);
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        @keyframes dropIn {
+            0% {
+                transform: translateY(-50px) scale(0.5);
+                opacity: 0;
+            }
+            60% {
+                transform: translateY(10px) scale(1.1);
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .stir-animation {
+            animation: stir 0.3s ease-in-out 3;
+        }
+
+        @keyframes stir {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-15deg); }
+            75% { transform: rotate(15deg); }
+        }
+
+        .ice-pile {
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 78px;
+            height: auto;
+            transform: translateX(-50%);
+            animation: iceSettle 0.7s cubic-bezier(.2,.8,.2,1) both, iceChill 4s ease-in-out 0.7s infinite;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.12));
+            transform-origin: 50% 85%;
+        }
+
+        .glass-placeholder.tumbler .ice-pile {
+            width: 112px;
+        }
+
+        .glass-placeholder.champagne .ice-pile {
+            width: 36px;
+        }
+
+        @keyframes iceSettle {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-42px) scale(0.86) rotate(-3deg); }
+            68% { opacity: 1; transform: translateX(-50%) translateY(4px) scale(1.03) rotate(1deg); }
+            100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1) rotate(0deg); }
+        }
+
+        @keyframes iceChill {
+            0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+            50% { transform: translateX(-50%) translateY(-2px) rotate(0.6deg); }
+        }
+
+        .stir-stick {
+            position: absolute;
+            width: 4px;
+            height: 100px;
+            background: linear-gradient(180deg, #8b7355 0%, #6b5344 100%);
+            border-radius: 2px;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            transform-origin: center bottom;
+            pointer-events: none;
+        }
+
+        .stir-stick.stirring {
+            animation: stirStick 0.4s ease-in-out 4;
+        }
+
+        @keyframes stirStick {
+            0%, 100% { transform: translateX(-50%) rotate(0deg); }
+            25% { transform: translateX(-50%) rotate(-20deg); }
+            75% { transform: translateX(-50%) rotate(20deg); }
+        }
+
+        .garnish-img {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .garnish-img.lemon-slice {
+            width: 75px;
+            height: 75px;
+        }
+
+        .garnish-img.cherry {
+            width: 50px;
+            height: 50px;
+        }
+
+        .mint-leaf {
+            position: absolute;
+            right: 29%;
+            bottom: 32%;
+            font-size: 1.65rem;
+            transform: rotate(-18deg);
+            animation: mintFloat 2.8s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 8;
+        }
+
+        .glass-placeholder.tumbler .mint-leaf {
+            right: 24%;
+            bottom: 34%;
+        }
+
+        .glass-placeholder.champagne .mint-leaf {
+            right: 35%;
+            bottom: 46%;
+            font-size: 1.25rem;
+        }
+
+        @keyframes mintFloat {
+            0%, 100% { transform: translateY(0) rotate(-18deg); }
+            50% { transform: translateY(-3px) rotate(-12deg); }
+        }
+
+        .salt-specks {
+            position: absolute;
+            left: 48%;
+            bottom: 27%;
+            width: 34px;
+            height: 18px;
+            transform: translateX(-50%);
+            pointer-events: none;
+            z-index: 7;
+        }
+
+        .salt-specks span {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.78);
+            box-shadow: 0 0 4px rgba(255,255,255,0.45);
+            animation: saltSink 0.7s ease forwards;
+        }
+
+        @keyframes saltSink {
+            0% { opacity: 0; transform: translateY(-12px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .glass-label {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+
+        .added-ingredients {
+            min-height: 40px;
+            margin-top: 0.5rem;
+        }
+
+        .ingredient-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: var(--secondary);
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            margin: 0.25rem;
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        .ingredients-panel {
+            margin-top: 1rem;
+        }
+
+        .ingredients-panel h4 {
+            margin: 0 0 0.75rem;
+            font-size: 0.95rem;
+            color: var(--muted-foreground);
+        }
+
+        .ingredient-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .ingredient-btn {
+            padding: 0.5rem 0.875rem;
+            border-radius: 9999px;
+            border: 2px solid var(--border);
+            background-color: var(--card);
+            color: var(--foreground);
+            cursor: grab;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .ingredient-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background-color: var(--secondary);
+        }
+
+        .ingredient-btn:active {
+            cursor: grabbing;
+        }
+
+        .ingredient-btn.used {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .ingredient-btn[draggable="true"]:hover {
+            transform: scale(1.05);
+        }
+
+        .dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+
+        .message-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background-color: var(--card);
+            border: 2px solid;
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            max-width: 90%;
+            width: 360px;
+        }
+
+        .message-popup.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .message-popup.error {
+            border-color: var(--destructive);
+        }
+
+        .message-popup.success {
+            border-color: var(--success);
+        }
+
+        .message-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .message-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-text {
+            color: var(--muted-foreground);
+            margin-bottom: 1.5rem;
+        }
+
+        .amount-options {
+            display: grid;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+        }
+
+        .amount-option {
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            background-color: var(--secondary);
+            color: var(--foreground);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .amount-option:hover {
+            border-color: var(--primary);
+            background-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0,0,0,0.6);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: none;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn:hover {
+            color: var(--foreground);
+        }
+
+        .steps-indicator {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .step-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--muted-foreground);
+            transition: all 0.3s;
+        }
+
+        .step-dot.active {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: var(--primary-foreground);
+        }
+
+        .step-dot.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+            color: var(--success-foreground);
+        }
+
+        .step-dot.error {
+            background-color: var(--destructive);
+            border-color: var(--destructive);
+            color: var(--destructive-foreground);
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <header class="header">
+            <h1>乘务调酒培训课程</h1>
+            <div class="score-display">
+                <div class="score-item">
+                    <div class="score-value" id="completedCount">0</div>
+                    <div class="score-label">已完成</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-value" id="totalCount">11</div>
+                    <div class="score-label">总酒品</div>
+                </div>
+            </div>
+        </header>
+
+        <div id="selectionScreen">
+            <div class="card">
+                <h2 style="margin-top: 0; margin-bottom: 1rem;">选择要调制的鸡尾酒</h2>
+                <div class="cocktail-grid" id="cocktailGrid"></div>
+            </div>
+        </div>
+
+        <div id="glassSelectScreen" class="hidden">
+            <button class="back-btn" onclick="backToSelection()">
+                ← 返回选择
+            </button>
+            <div class="card">
+                <h2 style="margin-top: 0; margin-bottom: 0.5rem;" id="glassSelectTitle">选择载杯</h2>
+                <p style="color: var(--muted-foreground); margin-bottom: 1.5rem;">
+                    为这款鸡尾酒选择合适的杯子
+                </p>
+                <div class="glass-select-grid">
+                    <div class="glass-option" onclick="selectGlass('highball')">
+                        <div class="glass-option-icon">🥛</div>
+                        <div class="glass-option-name">长饮杯</div>
+                    </div>
+                    <div class="glass-option" onclick="selectGlass('rocks')">
+                        <div class="glass-option-icon">🥃</div>
+                        <div class="glass-option-name">古典杯</div>
+                    </div>
+                    <div class="glass-option" onclick="selectGlass('champagne')">
+                        <div class="glass-option-icon">🥂</div>
+                        <div class="glass-option-name">香槟杯</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="gameScreen" class="hidden">
+            <button class="back-btn" onclick="backToSelection()">
+                ← 返回选择
+            </button>
+
+            <div class="game-layout">
+                <div class="card recipe-panel">
+                    <h2 id="cocktailName">金汤力</h2>
+                    <div class="recipe-name-en" id="cocktailNameEn">Gin Tonic</div>
+
+                    <div class="recipe-illustration" id="recipeIllustration"></div>
+
+                    <div class="steps-indicator" id="stepsIndicator"></div>
+                </div>
+
+                <div class="card work-area">
+                    <h3 class="work-area-title">👨‍🍳 调酒台</h3>
+
+                    <div class="glass-area">
+                        <div class="drop-zone" id="dropZone">
+                            <div class="glass-placeholder" id="glassPlaceholder">
+                                <div class="glass-contents" id="glassContents" style="height: 0%;"></div>
+                                <div class="glass-liquid-layers" id="liquidLayers"></div>
+                                <div id="solidIngredients"></div>
+                                <div class="champagne-stem"></div>
+                            </div>
+                            <div class="glass-label" id="glassLabel"></div>
+                        </div>
+                        <div class="added-ingredients" id="addedIngredients"></div>
+                    </div>
+
+                    <div class="ingredients-panel">
+                        <h4>选择配料/工具（点击或拖拽进杯子）</h4>
+                        <div class="ingredient-buttons" id="ingredientButtons"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="message-popup" id="messagePopup">
+        <div class="message-icon" id="messageIcon">❌</div>
+        <div class="message-title" id="messageTitle">出错了</div>
+        <div class="message-text" id="messageText">步骤顺序不对</div>
+        <button class="btn-primary btn-full" style="padding:0.75rem 1.5rem;border-radius:var(--radius);border:none;background:var(--primary);color:var(--primary-foreground);cursor:pointer;font-size:1rem;" onclick="closeMessage()">知道了</button>
+    </div>
+
+    <div class="message-popup" id="amountPopup">
+        <div class="message-icon">🥃</div>
+        <div class="message-title" id="amountTitle">选择用量</div>
+        <div class="message-text" id="amountText">请选择正确的用量</div>
+        <div class="amount-options" id="amountOptions"></div>
+    </div>
+
+    <script>
+        const ingredientColors = {
+            '金酒': '#e8e0d0',
+            '伏特加': '#ffffff',
+            '朗姆酒': '#f0e6d3',
+            '威士忌': '#c9956c',
+            '白兰地': '#c48b57',
+            '龙舌兰': '#f5ede0',
+            '柠檬汁': '#f9e076',
+            '橙汁': '#ff9a3c',
+            '菠萝汁': '#ffcc4d',
+            '番茄汁': '#d93a3e',
+            '牛奶': '#f5f5f0',
+            '椰奶': '#f0ebe0',
+            '可乐': '#3d2314',
+            '汤力水': '#e8f4f0',
+            '苏打水': '#f5ffff',
+            '干姜水': '#e8d5b0',
+            '咖啡力娇酒': '#4a3728',
+            '蓝橙力娇酒': '#2196f3',
+            '绿薄荷酒': '#4cd964',
+            '百利甜': '#b08968',
+            '红糖水': '#8b2500',
+            '红梅汁': '#e53935'
+        };
+
+        const ingredientEmojis = {
+            '冰块': '🧊',
+            '柠檬片': '🍋',
+            '柠檬角': '🍋',
+            '樱桃': '🍒',
+            '薄荷叶': '🌿',
+            '橄榄': '🫒',
+            '橙子片': '🍊',
+            '青柠片': '🍋',
+            '迷迭香': '🌿',
+            '搅拌棒': '🥄'
+        };
+
+        const ingredientImages = {
+            '柠檬片': '柠檬片.png',
+            '樱桃': '樱桃.png',
+            '冰块': 'ice-pile.png'
+        };
+
+        const distractors = [
+            '龙舌兰', '威士忌', '白兰地', '苦精', '红糖水',
+            '蓝橙力娇酒', '绿薄荷酒', '百利甜', '椰奶',
+            '西柚汁', '苹果汁', '红梅汁', '雪碧',
+            '糖', '橄榄', '橙子片', '青柠片', '迷迭香',
+            '苏打水', '汤力水', '干姜水'
+        ];
+
+        const cocktails = [
+            {
+                id: 'gin-tonic',
+                name: '金汤力',
+                nameEn: 'Gin Tonic',
+                image: '金汤力.png?v=202605071530',
+                emoji: '🍸',
+                glass: 'highball',
+                glassName: '长饮杯',
+                ingredients: ['3/2Oz 金酒', '适量汤力水', '柠檬片', '冰块', '搅拌棒'],
+                rawIngredients: ['金酒', '汤力水', '柠檬片', '冰块', '搅拌棒'],
+                steps: [
+                    { ingredient: '冰块' },
+                    { ingredient: '金酒', amount: '3/2Oz', wrongAmount: '1Oz' },
+                    { ingredient: '汤力水', amount: '适量', wrongAmount: '3Oz' },
+                    { ingredient: '柠檬片' },
+                    { ingredient: '搅拌棒' }
+                ]
+            },
+            {
+                id: 'tom-collins',
+                name: '汤姆卡林',
+                nameEn: 'Tom Collins',
+                image: '汤姆卡林.png',
+                emoji: '🍹',
+                glass: 'highball',
+                glassName: '长饮杯',
+                ingredients: ['1/2Oz 金酒', '1Oz 柠檬汁', '砂糖 1 袋', '适量苏打水', '柠檬片', '冰块', '搅拌棒'],
+                rawIngredients: ['金酒', '柠檬汁', '砂糖', '苏打水', '柠檬片', '冰块', '搅拌棒'],
+                steps: [
+                    { ingredient: '冰块' },
+                    { ingredient: '金酒', amount: '1/2Oz', wrongAmount: '1Oz' },
+                    { ingredient: '柠檬汁', amount: '1Oz', wrongAmount: '1/2Oz' },
+                    { ingredient: '砂糖', amount: '1袋', wrongAmount: '1/4勺' },
+                    { ingredient: '苏打水', amount: '适量', wrongAmount: '3Oz' },
+                    { ingredient: '柠檬片' },
+                    { ingredient: '搅拌棒' }
+                ]
+            },
+            {
+                id: 'cuba-libra',
+                name: '自由古巴',
+                nameEn: 'Cuba Libra',
+                image: '自由古巴.png?v=202605071524',
+                emoji: '🥃',
+                glass: 'highball',
+                glassName: '长饮杯',
+                ingredients: ['3/2Oz 朗姆酒', '适量可乐', '柠檬片', '冰块', '搅拌棒'],
+                rawIngredients: ['朗姆酒', '可乐', '柠檬片', '冰块', '搅拌棒'],
+                steps: [
+                    { ingredient: '冰块' },
+                    { ingredient: '朗姆酒', amount: '3/2Oz', wrongAmount: '1Oz' },
+                    { ingredient: '可乐', amount: '适量', wrongAmount: '3Oz' },
+                    { ingredient: '柠檬片' },
+                    { ingredient: '搅拌棒' }
+                ]
+            },
+            {
+                id: 'screwdriver',
+                name: '螺丝钻',
+                nameEn: 'Screwdriver',
+                image: '螺丝钻.png',
+                emoji: '🔧',
+                glass: ['highball', 'rocks'],
+                glassName: '长饮杯 或 古典杯',
+                ingredients: ['1Oz 伏特加', '3Oz 橙汁', '柠檬片', '冰块', '搅拌棒'],
+                rawIngredients: ['伏特加', '橙汁', '柠檬片', '冰块', '搅拌棒'],
+                steps: [
+                    { ingredient: '冰块' },
+                    { ingredient: '伏特加', amount: '1Oz', wrongAmount: '3/2Oz' },
+                    { ingredient: '橙汁', amount: '3Oz', wrongAmount: '1Oz' },
+                    { ingredient: '柠檬片' },
+                    { ingredient: '搅拌棒' }
+                ]
+            },
+            {
+                id: 'absolute-ginger',
+                name: '绝对干姜',
+                nameEn: 'Absolute Ginger Ale',
+                image: '绝对干姜.png',
+                emoji: '🍺',
+                glass: 'highball',
+                glassName: '长饮杯',
+                ingredients: ['1Oz 伏特加', '3Oz 干姜水', '柠檬角', '冰块', '搅拌棒'],
+                rawIngredients: ['伏特加', '干姜水', '柠檬角', '冰块', '搅拌棒'],
+                steps: [
+                    { ingredient: '冰块' },
+                    { ingredient: '伏特加', amount: '1Oz', wrongAmount: '3/2Oz' },
+                    { ingredient: '干姜水', amount: '3Oz', wrongAmount: '1Oz' },
+                    { ingredient: '柠檬角' },
+                    { ingredient: '搅拌棒' }
+                ]
+            },
+            {
+                id: 'absolute-tonic',
+                name: '绝对汤力',
+                nameEn: 'Absolute Tonic',
+                image: '绝对汤力.png',
+                emoji: '💧',
+                glass: 'highball',
+                glassName: '长饮杯',
+                ingredients: ['1Oz 伏特加', '3Oz 汤力水', '柠檬角', '冰块', '搅拌棒'],
+                rawIngredients: ['伏特加', '汤力水', '柠檬角', '冰块', '搅拌棒'],
+                steps: [
+                    { ingredient: '冰块' },
+                    { ingredient: '伏特加', amount: '1Oz', wrongAmount: '3/2Oz' },
+                    { ingredient: '汤力水', amount: '3Oz', wrongAmount: '适量' },
+                    { ingredient: '柠檬角' },
+                    { ingredient: '搅拌棒' }
+                ]
+            },
+            {
+                id: 'black-russian',
+                name: '黑俄罗斯',
+                nameEn: 'Black Russian',
+                image: '黑俄罗斯.png?v=202605071529',
+                emoji: '🖤',
+                glass: 'rocks',
+                glassName: '古典杯',
+                ingredients: ['1Oz 伏特加', '1/2Oz 咖啡力娇酒', '樱桃', '冰块'],
+                rawIngredients: ['伏特加', '咖啡力娇酒', '樱桃', '冰块'],
+                steps: [
+                    { ingredient: '冰块' },
+                    { ingredient: '伏特加', amount: '1Oz', wrongAmount: '3/2Oz' },
+                    { ingredient: '咖啡力娇酒', amount: '1/2Oz', wrongAmount: '1Oz' },
+                    { ingredient: '樱桃' }
+                ]
+            },
+            {
+                id: 'white-russian',
+                name: '白俄罗斯',
+                nameEn: 'White Russian',
+                image: '白俄罗斯.png?v=202605071530',
+                emoji: '🤍',
+                glass: 'rocks',
+                glassName: '古典杯',
+                ingredients: ['1Oz 伏特加', '1/2Oz 咖啡力娇酒', '1Oz 牛奶', '樱桃', '冰块'],
+                rawIngredients: ['伏特加', '咖啡力娇酒', '牛奶', '樱桃', '冰块'],
+                steps: [
+                    { ingredient: '冰块' },
+                    { ingredient: '伏特加', amount: '1Oz', wrongAmount: '3/2Oz' },
+                    { ingredient: '咖啡力娇酒', amount: '1/2Oz', wrongAmount: '1Oz' },
+                    { ingredient: '牛奶', amount: '1Oz', wrongAmount: '3Oz' },
+                    { ingredient: '樱桃' }
+                ]
+            },
+            {
+                id: 'mimosa',
+                name: '含羞草',
+                nameEn: 'Mimosa',
+                image: '含羞草.png',
+                emoji: '🥂',
+                glass: 'champagne',
+                glassName: '香槟杯',
+                ingredients: ['50% 香槟（起泡酒）', '50% 橙汁'],
+                rawIngredients: ['香槟', '橙汁'],
+                steps: [
+                    { ingredient: '香槟', amount: '50%', wrongAmount: '70%' },
+                    { ingredient: '橙汁', amount: '50%', wrongAmount: '30%' }
+                ]
+            },
+            {
+                id: 'sunrise',
+                name: '日出东方',
+                nameEn: 'Sunrise',
+                image: '日出东方.png',
+                emoji: '🌅',
+                glass: 'highball',
+                glassName: '长饮杯',
+                ingredients: ['菠萝汁', '番茄汁', '搅拌棒'],
+                rawIngredients: ['菠萝汁', '番茄汁', '搅拌棒'],
+                steps: [
+                    { ingredient: '菠萝汁', amount: '至1/2杯处', wrongAmount: '至七成满' },
+                    { ingredient: '番茄汁', amount: '至七成满', wrongAmount: '至1/2杯处' },
+                    { ingredient: '搅拌棒' }
+                ]
+            },
+            {
+                id: 'bright-orange',
+                name: '明亮前橙',
+                nameEn: 'Bright Orange',
+                image: '明亮前橙.png',
+                emoji: '🍊',
+                glass: 'highball',
+                glassName: '长饮杯',
+                ingredients: ['柠檬汁', '橙汁', '1/4勺盐', '适量汤力水', '薄荷叶', '搅拌棒'],
+                rawIngredients: ['柠檬汁', '橙汁', '盐', '汤力水', '薄荷叶', '搅拌棒'],
+                steps: [
+                    { ingredient: '柠檬汁', amount: '铺满杯底', wrongAmount: '至1/2杯处' },
+                    { ingredient: '橙汁', amount: '至1/2杯处', wrongAmount: '至七成满' },
+                    { ingredient: '盐', amount: '1/4勺', wrongAmount: '1袋' },
+                    { ingredient: '汤力水', amount: '至七成满', wrongAmount: '适量' },
+                    { ingredient: '薄荷叶', amount: '1片', wrongAmount: '3片' },
+                    { ingredient: '搅拌棒' }
+                ]
+            }
+        ];
+
+        let gameState = {
+            currentCocktail: null,
+            currentStepIndex: 0,
+            completedCocktails: new Set(),
+            addedIngredients: [],
+            addedLiquids: 0,
+            liquidLayers: [],
+            solidIngredients: [],
+            iceCount: 0,
+            selectedGlass: null
+        };
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function getRawIngredientName(ingredientLabel) {
+            return ingredientLabel.replace(/（.*）$/, '');
+        }
+
+        function getIngredientsWithDistractors(correctIngredients) {
+            const usedIngredients = gameState.addedIngredients
+                .slice(0, gameState.currentStepIndex)
+                .map(getRawIngredientName);
+
+            const availableDistractors = distractors.filter(d =>
+                !correctIngredients.includes(d) && !usedIngredients.includes(d)
+            );
+
+            const numDistractors = Math.min(3 + Math.floor(Math.random() * 4), availableDistractors.length);
+            const selectedDistractors = shuffleArray(availableDistractors).slice(0, numDistractors);
+
+            const availableCorrect = correctIngredients.filter(ing => {
+                const usedCount = usedIngredients.filter(u => u === ing).length;
+                const neededCount = gameState.currentCocktail.steps.filter(s => s.ingredient === ing).length;
+                return usedCount < neededCount;
+            });
+
+            const uniqueAvailableCorrect = [...new Set(availableCorrect)];
+
+            return shuffleArray([...uniqueAvailableCorrect, ...selectedDistractors]);
+        }
+
+        function init() {
+            renderCocktailGrid();
+            updateScoreDisplay();
+        }
+
+        function renderCocktailGrid() {
+            const grid = document.getElementById('cocktailGrid');
+            grid.innerHTML = '';
+
+            cocktails.forEach((cocktail, index) => {
+                const isCompleted = gameState.completedCocktails.has(cocktail.id);
+                const card = document.createElement('div');
+                card.className = 'cocktail-card' + (isCompleted ? ' completed' : '');
+
+                let imageContent = '';
+                if (cocktail.image) {
+                    imageContent = `<img class="cocktail-image-placeholder" src="${cocktail.image}" alt="${cocktail.name}">`;
+                } else {
+                    imageContent = `<div class="cocktail-image-placeholder" style="display:flex;align-items:center;justify-content:center;font-size:2.5rem;">${cocktail.emoji}</div>`;
+                }
+
+                card.innerHTML = `
+                    ${imageContent}
+                    <div class="cocktail-name">${cocktail.name}</div>
+                    <div class="cocktail-name-en">${cocktail.nameEn}</div>
+                    ${isCompleted ? '<div class="completed-badge">✓ 已完成</div>' : ''}
+                `;
+                card.onclick = () => startGlassSelection(cocktail);
+                grid.appendChild(card);
+            });
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('completedCount').textContent = gameState.completedCocktails.size;
+            document.getElementById('totalCount').textContent = cocktails.length;
+        }
+
+        function startGlassSelection(cocktail) {
+            gameState.currentCocktail = cocktail;
+            gameState.selectedGlass = null;
+            document.getElementById('selectionScreen').classList.add('hidden');
+            document.getElementById('glassSelectScreen').classList.remove('hidden');
+            document.getElementById('glassSelectTitle').textContent = cocktail.name + ' - 选择载杯';
+        }
+
+        function selectGlass(glassType) {
+            const correctGlass = gameState.currentCocktail.glass;
+            const isCorrect = Array.isArray(correctGlass)
+                ? correctGlass.includes(glassType)
+                : glassType === correctGlass;
+
+            if (isCorrect) {
+                gameState.selectedGlass = glassType;
+                document.getElementById('glassSelectScreen').classList.add('hidden');
+                startGame(gameState.currentCocktail);
+            } else {
+                showError('杯型选择错误，请重新选择');
+            }
+        }
+
+        function startGame(cocktail) {
+            gameState.currentCocktail = cocktail;
+            gameState.currentStepIndex = 0;
+            gameState.addedIngredients = [];
+            gameState.addedLiquids = 0;
+            gameState.liquidLayers = [];
+            gameState.solidIngredients = [];
+            gameState.iceCount = 0;
+            gameState.selectedGlass = gameState.selectedGlass || (Array.isArray(cocktail.glass) ? cocktail.glass[0] : cocktail.glass);
+
+            document.getElementById('gameScreen').classList.remove('hidden');
+
+            renderGame();
+        }
+
+        function backToSelection() {
+            document.getElementById('glassSelectScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('selectionScreen').classList.remove('hidden');
+            renderCocktailGrid();
+        }
+
+        function renderGame() {
+            const cocktail = gameState.currentCocktail;
+
+            document.getElementById('cocktailName').textContent = cocktail.name;
+            document.getElementById('cocktailNameEn').textContent = cocktail.nameEn;
+
+            const illustrationEl = document.getElementById('recipeIllustration');
+            if (cocktail.image) {
+                illustrationEl.innerHTML = `<img src="${cocktail.image}" alt="${cocktail.name}" style="width:100%;height:100%;object-fit:contain;border-radius:var(--radius);">`;
+            } else {
+                illustrationEl.innerHTML = cocktail.emoji;
+            }
+
+            const glassPlaceholder = document.getElementById('glassPlaceholder');
+            glassPlaceholder.className = 'glass-placeholder';
+            const displayGlass = gameState.selectedGlass || (Array.isArray(cocktail.glass) ? cocktail.glass[0] : cocktail.glass);
+            if (displayGlass === 'rocks') {
+                glassPlaceholder.classList.add('tumbler');
+            } else if (displayGlass === 'champagne') {
+                glassPlaceholder.classList.add('champagne');
+            }
+            const selectedGlassName = {
+                highball: '长饮杯',
+                rocks: '古典杯',
+                champagne: '香槟杯'
+            }[displayGlass] || cocktail.glassName;
+            document.getElementById('glassLabel').textContent = selectedGlassName;
+
+            renderStepsIndicator();
+            renderIngredientButtons();
+            renderAddedIngredients();
+            updateGlassContents();
+            renderLiquidLayers();
+            renderSolidIngredients();
+            setupDragAndDrop();
+        }
+
+        function renderStepsIndicator() {
+            const container = document.getElementById('stepsIndicator');
+            container.innerHTML = '';
+
+            gameState.currentCocktail.steps.forEach((step, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'step-dot';
+                if (index < gameState.currentStepIndex) {
+                    dot.classList.add('completed');
+                    dot.textContent = '✓';
+                } else if (index === gameState.currentStepIndex) {
+                    dot.classList.add('active');
+                    dot.textContent = index + 1;
+                } else {
+                    dot.textContent = index + 1;
+                }
+                container.appendChild(dot);
+            });
+        }
+
+        function renderIngredientButtons() {
+            const ingredientButtons = document.getElementById('ingredientButtons');
+            ingredientButtons.innerHTML = '';
+
+            const cocktail = gameState.currentCocktail;
+            const allIngredients = getIngredientsWithDistractors(cocktail.rawIngredients);
+
+            allIngredients.forEach(ing => {
+                const usedIngredients = gameState.addedIngredients
+                    .slice(0, gameState.currentStepIndex)
+                    .map(getRawIngredientName);
+                const isUsed = usedIngredients.includes(ing);
+
+                const btn = document.createElement('button');
+                btn.className = 'ingredient-btn' + (isUsed ? ' used' : '');
+                btn.textContent = ing;
+                btn.draggable = !isUsed;
+                btn.dataset.ingredient = ing;
+
+                if (!isUsed) {
+                    btn.onclick = () => handleIngredient(ing);
+                }
+
+                ingredientButtons.appendChild(btn);
+            });
+        }
+
+        function handleIngredient(ingredient) {
+            const step = gameState.currentCocktail.steps[gameState.currentStepIndex];
+
+            if (step.ingredient === ingredient) {
+                if (step.amount) {
+                    showAmountChoice(step);
+                } else {
+                    applyIngredientStep(step);
+                }
+            } else {
+                showError('选择错误，请回忆正确的步骤顺序');
+            }
+        }
+
+        function showAmountChoice(step) {
+            const popup = document.getElementById('amountPopup');
+            const overlay = document.getElementById('overlay');
+            const options = document.getElementById('amountOptions');
+            const amounts = shuffleArray([step.amount, step.wrongAmount]);
+
+            document.getElementById('amountTitle').textContent = `选择「${step.ingredient}」用量`;
+            document.getElementById('amountText').textContent = '这一步需要先确认正确用量';
+            options.innerHTML = '';
+
+            amounts.forEach(amount => {
+                const btn = document.createElement('button');
+                btn.className = 'amount-option';
+                btn.textContent = amount;
+                btn.onclick = () => handleAmountChoice(step, amount);
+                options.appendChild(btn);
+            });
+
+            popup.className = 'message-popup show';
+            overlay.classList.add('show');
+        }
+
+        function handleAmountChoice(step, amount) {
+            closeAmountChoice();
+
+            if (amount === step.amount) {
+                applyIngredientStep(step);
+            } else {
+                showError('用量选择错误，请重新选择原料和用量');
+            }
+        }
+
+        function closeAmountChoice() {
+            document.getElementById('amountPopup').classList.remove('show');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        function applyIngredientStep(step) {
+            const ingredient = step.ingredient;
+            gameState.addedIngredients.push(step.amount ? `${ingredient}（${step.amount}）` : ingredient);
+
+            const isLiquid = ingredient !== '冰块' && ingredient !== '搅拌棒' &&
+                ingredient !== '柠檬片' && ingredient !== '柠檬角' &&
+                ingredient !== '樱桃' && ingredient !== '薄荷叶' &&
+                ingredient !== '盐' && ingredient !== '砂糖';
+
+            if (isLiquid) {
+                gameState.addedLiquids++;
+                gameState.liquidLayers.push({
+                    ingredient: ingredient,
+                    color: ingredientColors[ingredient] || '#f2af4f'
+                });
+            } else if (ingredient === '冰块') {
+                gameState.iceCount = 6 + Math.floor(Math.random() * 4);
+            } else {
+                gameState.solidIngredients.push({
+                    ingredient: ingredient,
+                    emoji: ingredientEmojis[ingredient] || '✨'
+                });
+            }
+
+            advanceStep();
+        }
+
+        function renderLiquidLayers() {
+            const container = document.getElementById('liquidLayers');
+            container.innerHTML = '';
+
+            const numLayers = gameState.liquidLayers.length;
+            if (numLayers === 0) return;
+
+            const heightPerLayer = Math.min(25, 80 / Math.max(numLayers, 1));
+
+            gameState.liquidLayers.forEach((layer, index) => {
+                const layerDiv = document.createElement('div');
+                layerDiv.className = 'liquid-layer show';
+                layerDiv.style.height = heightPerLayer + '%';
+                layerDiv.style.backgroundColor = layer.color;
+                layerDiv.style.opacity = '0.9';
+                container.appendChild(layerDiv);
+            });
+        }
+
+        function renderSolidIngredients() {
+            const container = document.getElementById('solidIngredients');
+            container.innerHTML = '';
+
+            // 渲染自然铺底冰块素材
+            if (gameState.iceCount > 0) {
+                const iceClip = document.createElement('div');
+                iceClip.className = 'ice-clip';
+                const iceImg = document.createElement('img');
+                iceImg.className = 'ice-pile';
+                iceImg.src = ingredientImages['冰块'];
+                iceImg.alt = '冰块';
+                iceClip.appendChild(iceImg);
+                container.appendChild(iceClip);
+            }
+
+            // 渲染其他固体配料
+            gameState.solidIngredients.forEach((solid, index) => {
+                if (solid.ingredient === '搅拌棒') {
+                    // 绘制搅拌棒
+                    const stickDiv = document.createElement('div');
+                    stickDiv.className = 'stir-stick stirring';
+                    container.appendChild(stickDiv);
+                } else if (solid.ingredient === '柠檬片' || solid.ingredient === '柠檬角') {
+                    const garnishDiv = document.createElement('img');
+                    garnishDiv.className = 'garnish-img lemon-slice solid-ingredient';
+                    garnishDiv.src = ingredientImages['柠檬片'];
+                    garnishDiv.style.top = '-10px';
+                    garnishDiv.style.right = '-20px';
+                    garnishDiv.style.zIndex = '10';
+                    container.appendChild(garnishDiv);
+                } else if (solid.ingredient === '樱桃') {
+                    const garnishImg = document.createElement('img');
+                    garnishImg.className = 'garnish-img cherry solid-ingredient';
+                    garnishImg.src = ingredientImages['樱桃'];
+                    garnishImg.style.top = '-5px';
+                    garnishImg.style.right = '-10px';
+                    garnishImg.style.zIndex = '10';
+                    container.appendChild(garnishImg);
+                } else if (solid.ingredient === '薄荷叶') {
+                    const mintDiv = document.createElement('div');
+                    mintDiv.className = 'mint-leaf';
+                    mintDiv.textContent = '🌿';
+                    container.appendChild(mintDiv);
+                } else if (solid.ingredient === '盐') {
+                    const saltDiv = document.createElement('div');
+                    saltDiv.className = 'salt-specks';
+                    const positions = [
+                        [2, 3], [10, 8], [17, 2], [24, 10], [31, 5],
+                        [7, 14], [20, 15], [28, 1]
+                    ];
+                    positions.forEach((pos, saltIndex) => {
+                        const speck = document.createElement('span');
+                        speck.style.left = pos[0] + 'px';
+                        speck.style.top = pos[1] + 'px';
+                        speck.style.animationDelay = (saltIndex * 0.05) + 's';
+                        saltDiv.appendChild(speck);
+                    });
+                    container.appendChild(saltDiv);
+                } else {
+                    const solidDiv = document.createElement('div');
+                    solidDiv.className = 'solid-ingredient';
+                    solidDiv.style.bottom = (30 + index * 10) + 'px';
+                    solidDiv.style.right = (10 + index * 5) + 'px';
+                    solidDiv.textContent = solid.emoji;
+                    container.appendChild(solidDiv);
+                }
+            });
+        }
+
+        function advanceStep() {
+            gameState.currentStepIndex++;
+            renderGame();
+            checkCompletion();
+        }
+
+        function checkCompletion() {
+            if (gameState.currentStepIndex >= gameState.currentCocktail.steps.length) {
+                gameState.completedCocktails.add(gameState.currentCocktail.id);
+                updateScoreDisplay();
+                showSuccess();
+            }
+        }
+
+        function renderAddedIngredients() {
+            const container = document.getElementById('addedIngredients');
+            container.innerHTML = gameState.addedIngredients
+                .map(ing => `<span class="ingredient-tag">${ing}</span>`)
+                .join('');
+        }
+
+        function updateGlassContents() {
+            const contents = document.getElementById('glassContents');
+            const percentage = Math.min(gameState.addedLiquids * 20, 80);
+            contents.style.height = percentage + '%';
+        }
+
+        let draggedIngredient = null;
+
+        function setupDragAndDrop() {
+            const dropZone = document.getElementById('dropZone');
+            const ingredientButtons = document.querySelectorAll('.ingredient-btn:not(.used)');
+
+            ingredientButtons.forEach(btn => {
+                btn.addEventListener('dragstart', handleDragStart);
+                btn.addEventListener('dragend', handleDragEnd);
+            });
+
+            dropZone.addEventListener('dragover', handleDragOver);
+            dropZone.addEventListener('dragleave', handleDragLeave);
+            dropZone.addEventListener('drop', handleDrop);
+        }
+
+        function handleDragStart(e) {
+            draggedIngredient = e.target.dataset.ingredient;
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', draggedIngredient);
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            draggedIngredient = null;
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            document.getElementById('dropZone').classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            document.getElementById('dropZone').classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            document.getElementById('dropZone').classList.remove('drag-over');
+
+            const ingredient = e.dataTransfer.getData('text/plain');
+            if (ingredient) {
+                handleIngredient(ingredient);
+            }
+        }
+
+        function showError(text) {
+            const popup = document.getElementById('messagePopup');
+            const overlay = document.getElementById('overlay');
+
+            document.getElementById('messageIcon').textContent = '❌';
+            document.getElementById('messageTitle').textContent = '错误';
+            document.getElementById('messageText').textContent = text;
+
+            popup.className = 'message-popup error show';
+            overlay.classList.add('show');
+
+            const dots = document.querySelectorAll('.step-dot');
+            if (dots[gameState.currentStepIndex]) {
+                dots[gameState.currentStepIndex].classList.add('error');
+                setTimeout(() => {
+                    dots[gameState.currentStepIndex].classList.remove('error');
+                }, 500);
+            }
+        }
+
+        function showSuccess() {
+            setTimeout(() => {
+                const popup = document.getElementById('messagePopup');
+                const overlay = document.getElementById('overlay');
+
+                document.getElementById('messageIcon').textContent = '🎉';
+                document.getElementById('messageTitle').textContent = '调制完成！';
+                document.getElementById('messageText').textContent =
+                    `${gameState.currentCocktail.name} 制作成功！`;
+
+                popup.className = 'message-popup success show';
+                overlay.classList.add('show');
+
+                const btn = popup.querySelector('button');
+                btn.textContent = '继续挑战';
+                btn.onclick = () => {
+                    closeMessage();
+                    backToSelection();
+                };
+            }, 1000);
+        }
+
+        function closeMessage() {
+            const popup = document.getElementById('messagePopup');
+            const overlay = document.getElementById('overlay');
+
+            popup.classList.remove('show');
+            overlay.classList.remove('show');
+
+            const btn = popup.querySelector('button');
+            btn.textContent = '知道了';
+            btn.onclick = closeMessage;
+        }
+
+        init();
+    </script>
+</body>
+</html>
